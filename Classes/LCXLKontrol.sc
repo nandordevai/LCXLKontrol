@@ -23,30 +23,27 @@ LCXLKontrol {
         this.assignCtls;
     }
 
+    addControl {
+        arg groupName, ctlGroup, cc, i;
+
+        var key = (groupName ++ (i + 1)).asSymbol;
+        var lc = LCXLController(key, cc);
+        ctlGroup.add(lc);
+        ctls.put(key, lc);
+    }
+
     assignCtls {
         ccFaders.do {|cc, i|
-            var key = ("fader" ++ (i+1)).asSymbol;
-            var lc = LCXLController(key, cc);
-            faders.add(lc);
-            ctls.put(key, lc);
+            this.addControl("fader", faders, cc, i);
         };
         ccSendAKnobs.do {|cc, i|
-            var key = ("sendA" ++ (i+1)).asSymbol;
-            var lc = LCXLController(key, cc);
-            sendAKnobs.add(lc);
-            ctls.put(key, lc);
+            this.addControl("sendA", sendAKnobs, cc, i);
         };
         ccSendBKnobs.do {|cc, i|
-            var key = ("sendB" ++ (i+1)).asSymbol;
-            var lc = LCXLController(key, cc);
-            sendBKnobs.add(lc);
-            ctls.put(key, lc);
+            this.addControl("sendB", sendBKnobs, cc, i);
         };
         ccPanKnobs.do {|cc, i|
-            var key = ("pan" ++ (i+1)).asSymbol;
-            var lc = LCXLController(key, cc);
-            panKnobs.add(lc);
-            ctls.put(key, lc);
+            this.addControl("pan", panKnobs, cc, i);
         };
     }
 
@@ -62,11 +59,15 @@ LCXLKontrol {
 LCXLController {
     var key, cc;
 
-    *new {|key, cc|
+    *new {
+        arg key, cc;
+
         ^super.newCopyArgs(("lcxl_" ++ key).asSymbol, cc);
     }
 
-    onChange_ {|func|
+    onChange_ {
+        arg func;
+
         MIDIdef.cc(key, func, cc);
     }
 
