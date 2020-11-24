@@ -1,5 +1,5 @@
 LCXLKontrol {
-    var <faders, <knobs;
+    var <faders, <sendAKnobs, <sendBKnobs, <panKnobs;
     var ctls;
     var ccFaders, ccSendAKnobs, ccSendBKnobs, ccPanKnobs;
 
@@ -10,6 +10,9 @@ LCXLKontrol {
     init {
         ctls = ();
         faders = List[];
+        sendAKnobs = List[];
+        sendBKnobs = List[];
+        panKnobs = List[];
         ccFaders = (77..84);
         ccSendAKnobs = (13..20);
         ccSendBKnobs = (29..36);
@@ -30,19 +33,19 @@ LCXLKontrol {
         ccSendAKnobs.do {|cc, i|
             var key = ("sendA" ++ (i+1)).asSymbol;
             var lc = LCXLController(key, cc);
-            faders.add(lc);
+            sendAKnobs.add(lc);
             ctls.put(key, lc);
         };
         ccSendBKnobs.do {|cc, i|
             var key = ("sendB" ++ (i+1)).asSymbol;
             var lc = LCXLController(key, cc);
-            faders.add(lc);
+            sendBKnobs.add(lc);
             ctls.put(key, lc);
         };
         ccPanKnobs.do {|cc, i|
             var key = ("pan" ++ (i+1)).asSymbol;
             var lc = LCXLController(key, cc);
-            faders.add(lc);
+            panKnobs.add(lc);
             ctls.put(key, lc);
         };
     }
