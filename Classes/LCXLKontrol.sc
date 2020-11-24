@@ -1,7 +1,9 @@
 LCXLKontrol {
     var <faders, <sendAKnobs, <sendBKnobs, <panKnobs;
-    var ctls;
+    var <focusButtons, <controlButtons;
+    var ctls, midiOut;
     var ccFaders, ccSendAKnobs, ccSendBKnobs, ccPanKnobs;
+    var noteFocusButtons, noteControlButtons;
 
     *new {
         ^super.new.init;
@@ -13,23 +15,34 @@ LCXLKontrol {
         sendAKnobs = List[];
         sendBKnobs = List[];
         panKnobs = List[];
+        focusButtons = List[];
+        controlButtons = List[];
         ccFaders = (77..84);
         ccSendAKnobs = (13..20);
         ccSendBKnobs = (29..36);
         ccPanKnobs = (49..56);
+        noteFocusButtons = (41..44) ++ (57..60);
+        noteControlButtons = (73..80);
 
         MIDIClient.init;
         MIDIIn.connectAll;
+        midiOut = MIDIOut.newByName("Launch Control XL", "Launch Control XL");
+
         this.assignCtls;
     }
 
-    addControl {
-        arg groupName, ctlGroup, cc, i;
-
+    addControl {|groupName, ctlGroup, cc, i|
         var key = (groupName ++ (i + 1)).asSymbol;
         var lc = LCXLController(key, cc);
         ctlGroup.add(lc);
         ctls.put(key, lc);
+    }
+
+    addButton {|groupName, ctlGroup, note, i|
+        var key = (groupName ++ (i + 1)).asSymbol;
+        var lb = LCXLButton(key, note, midiOut);
+        ctlGroup.add(lb);
+        ctls.put(key, lb);
     }
 
     assignCtls {
@@ -45,6 +58,12 @@ LCXLKontrol {
         ccPanKnobs.do {|cc, i|
             this.addControl("pan", panKnobs, cc, i);
         };
+        noteFocusButtons.do {|note, i|
+            this.addButton("focus", focusButtons, note, i);
+        };
+        noteControlButtons.do {|note, i|
+            this.addButton("control", controlButtons, note, i);
+        }
     }
 
     freeAll {
@@ -59,18 +78,32 @@ LCXLKontrol {
 LCXLController {
     var key, cc;
 
-    *new {
-        arg key, cc;
-
+    *new {|key, cc|
         ^super.newCopyArgs(("lcxl_" ++ key).asSymbol, cc);
     }
 
-    onChange_ {
-        arg func;
-
+    onChange_ {|func|
         MIDIdef.cc(key, func, cc);
     }
 
+    // FIXME: remove duplication
+    free {
+        MIDIdef.cc(key).free;
+    }
+}
+
+LCXLButton {
+    var key, note, midiOut;
+
+    *new {|key, note, midiOut|
+        ^super.newCopyArgs(("lcxl_" ++ key).asSymbol, note, midiOut);
+    }
+
+    onPress_ {|func|
+        MIDIdef.noteOn(key, func, note);
+    }
+
+    // FIXME: remove duplication
     free {
         MIDIdef.cc(key).free;
     }

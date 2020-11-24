@@ -123,6 +123,25 @@ LCXLButton : LCXLController {
     }
 
     onPress_ {|func|
+
+    /*
+            41..44.do {|i|
+                ~midiOut.noteOn(0, i, 16);
+            };
+            )
+            (
+            57..60.do {|i|
+                ~midiOut.noteOn(0, i, 16);
+            };
+            )
+
+            // 41..44, 57..60
+
+            // 16 x green brightness
+            ~midiOut.noteOn(0, 60, 16);
+        */
+
+
         MIDIdef.cc((key ++ "_on").asSymbol, {|val|
             if (val == 127) {
                 func.(val, this)
