@@ -2,15 +2,16 @@
 
 Interface for using Novation LaunchControl XL with SuperCollider. Based on [NanoKontrol2](https://github.com/davidgranstrom/NanoKontrol2) by David Granström
 
+The MIDI CC and note numbers are set according to the default template.
+
 ## Basic usage
 
-```
+```sclang
 ~lc = LCXLKontrol();
 
 // register a function to be evaluted when fader1 is changed
 (
-~lc.fader1.onChange = {
-  arg val;
+~lc.fader1.onChange = {|val|
   (val / 127).postln;
 };
 )
@@ -20,7 +21,7 @@ Interface for using Novation LaunchControl XL with SuperCollider. Based on [Nano
 
 It is possible to incrementally assign faders and knobs.
 
-```
+```sclang
 ~lc = LCXLKontrol();
 
 (
@@ -34,10 +35,9 @@ It is possible to incrementally assign faders and knobs.
 
 Or just a selection of controls
 
-```
+```sclang
 // assign faders 1 .. 4
-~lc.faders[..3].do {
-    arg fader, i;
+~lc.faders[..3].do {|fader, i|
     fader.onChange = {|val|
         "Fader #% value is %\n".postf(i + 1, val);
     }
@@ -69,6 +69,8 @@ The following controllers are supported:
 * `sendA1 .. 8`
 * `sendB1 .. 8`
 * `pan1 .. 8`
+* `focus1 .. 8`
+* `control1 .. 8`
 
 #### Collections
 
@@ -76,3 +78,5 @@ The following controllers are supported:
 * `sendAKnobs`
 * `sendBKnobs`
 * `panKnobs`
+* `focusButtons`
+* `controlButtons`
