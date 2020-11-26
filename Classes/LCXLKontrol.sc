@@ -86,6 +86,15 @@ LCXLController {
         MIDIdef.cc(key, func, cc);
     }
 
+    mapTo {|value, min=0, max=127|
+        MIDIdef.cc(key, {|v|
+            var newValue = v.linlin(0, 127, min, max).round;
+            currentEnvironment[value.asSymbol] = newValue;
+            newValue.postln;
+            value;
+        }, cc);
+    }
+
     // FIXME: remove duplication
     free {
         MIDIdef.cc(key).free;

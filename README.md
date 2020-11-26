@@ -15,6 +15,11 @@ The MIDI CC and note numbers are set according to the default template.
   (val / 127).postln;
 };
 )
+
+(
+~octave = 5;
+~lc.fader2.mapTo("octave", 4, 7);
+)
 ```
 
 ## Incremental assignment
@@ -48,11 +53,13 @@ Or just a selection of controls
 
 ### Methods
 
-`onChange` all controls (faders/knobs/buttons) can register a function using this method
+`onChange(func)` Calls *func* when the controller's value change.
 
-`free` unregisters a MIDI responder
+`mapTo(value, min, max)` Maps controller value to global variable *value*, given as a string. Converts values with *linlin* to be between *min* and *max*.
 
-`freeAll` unregisters all MIDI responders
+`free()` Unregisters a MIDI responder.
+
+`freeAll()` Unregisters all MIDI responders.
 
 *Note: `Cmd-.` removes all MIDI responders by default in SuperCollider*
 
