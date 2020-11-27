@@ -67,7 +67,7 @@ LCXLKontrol {
     }
 
     freeAll {
-        ctls.do(_.free);
+        ctls.do(MIDIdef.cc(_.key).free);
     }
 
     doesNotUnderstand {|selector ... args|
@@ -94,11 +94,6 @@ LCXLController {
             value;
         }, cc);
     }
-
-    // FIXME: remove duplication
-    free {
-        MIDIdef.cc(key).free;
-    }
 }
 
 LCXLButton {
@@ -110,10 +105,5 @@ LCXLButton {
 
     onPress_ {|func|
         MIDIdef.noteOn(key, func, note);
-    }
-
-    // FIXME: remove duplication
-    free {
-        MIDIdef.cc(key).free;
     }
 }
