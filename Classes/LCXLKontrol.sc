@@ -86,9 +86,10 @@ LCXLController {
         MIDIdef.cc(key, func, cc);
     }
 
-    mapTo {|value, min=0, max=127|
+    mapTo {|value, min=0, max=127, round=true|
         MIDIdef.cc(key, {|v|
-            var newValue = v.linlin(0, 127, min, max).round;
+            var newValue = v.linlin(0, 127, min, max);
+            if (round, { newValue.round });
             currentEnvironment[value.asSymbol] = newValue;
             newValue.postln;
             value;

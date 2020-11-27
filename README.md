@@ -6,16 +6,25 @@ The MIDI CC and note numbers are set according to the default template.
 
 ## Basic usage
 
+Instantiate the class:
+
 ```sclang
 ~lc = LCXLKontrol();
+```
 
-// register a function to be evaluted when fader1 is changed
+Register a function to be evaluted when fader1 is changed:
+
+```sclang
 (
 ~lc.fader1.onChange = {|val|
   (val / 127).postln;
 };
 )
+```
 
+Map a global variable to a controller with optional value interpolation:
+
+```sclang
 (
 ~octave = 5;
 ~lc.fader2.mapTo("octave", 4, 7);
@@ -27,8 +36,6 @@ The MIDI CC and note numbers are set according to the default template.
 It is possible to incrementally assign faders and knobs.
 
 ```sclang
-~lc = LCXLKontrol();
-
 (
 ~lc.faders.do {
     arg fader, i;
@@ -41,7 +48,6 @@ It is possible to incrementally assign faders and knobs.
 Or just a selection of controls
 
 ```sclang
-// assign faders 1 .. 4
 ~lc.faders[..3].do {|fader, i|
     fader.onChange = {|val|
         "Fader #% value is %\n".postf(i + 1, val);
@@ -55,7 +61,7 @@ Or just a selection of controls
 
 `onChange(func)` Calls *func* when the controller's value change.
 
-`mapTo(value, min, max)` Maps controller value to global variable *value*, given as a string. Converts values with *linlin* to be between *min* and *max*.
+`mapTo(value, min, max, round)` Maps controller value to global variable *value*, given as a string. Converts values with *linlin* to be between *min* and *max*. If *round* is true (default), rounds the value to the nearest integer.
 
 `free()` Unregisters a MIDI responder.
 
