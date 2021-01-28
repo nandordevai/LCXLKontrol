@@ -12,7 +12,7 @@ Instantiate the class:
 ~lc = LCXLKontrol();
 ```
 
-Register a function to be evaluted when fader1 is changed:
+Register a function to be evaluated when fader1 is changed:
 
 ```sclang
 (
@@ -43,6 +43,7 @@ It is possible to incrementally assign faders and knobs.
         "Fader #% value is %\n".postf(i + 1, val);
     }
 };
+)
 ```
 
 Or just a selection of controls
@@ -61,7 +62,7 @@ Or just a selection of controls
 
 `onChange(func)` Calls *func* when the controller's value change.
 
-`mapTo(value, min, max, round)` Maps controller value to global variable *value*, given as a string. Converts values with *linlin* to be between *min* and *max*. If *round* is true (default), rounds the value to the nearest integer.
+`mapTo(variable, min, max, round)` Maps controller value to global variable *variable*, given as a string. Converts values with *linlin* to be between *min* and *max*. If *round* is true (default), rounds the value to the nearest integer.
 
 `free()` Unregisters a MIDI responder.
 
