@@ -22,7 +22,7 @@ LCXLKontrol {
         ccSendBKnobs = (29..36);
         ccPanKnobs = (49..56);
         noteFocusButtons = (41..44) ++ (57..60);
-        noteControlButtons = (73..80);
+        noteControlButtons = (73..76) ++ (80..92);
 
         MIDIClient.init;
         MIDIIn.connectAll;
