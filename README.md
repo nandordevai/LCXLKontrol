@@ -56,6 +56,10 @@ Or just a selection of controls
 };
 ```
 
+## GUI
+
+The `LCXLGUI.sc` file contains a basic GUI implementation. It's not really usable for anything (you have your physical controller after all) just a test.
+
 ## Interface
 
 ### Methods
